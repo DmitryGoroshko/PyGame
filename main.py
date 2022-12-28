@@ -1,6 +1,8 @@
 # Импортируем библиотеку pygame
 import pygame
+import player
 from pygame import *
+from player import *
 
 # Объявляем переменные
 WIN_WIDTH = 800  # Ширина создаваемого окна
@@ -45,6 +47,10 @@ def main():
     bg.fill(Color(BACKGROUND_COLOR))  # Заливаем поверхность сплошным цветом
 
     x = y = 0  # координаты
+
+    hero = Player(55, 55)
+    left = right = False
+
     for row in level:  # вся строка
         for col in row:  # каждый символ
             if col == "-":
@@ -57,7 +63,10 @@ def main():
         y += PLATFORM_HEIGHT  # то же самое и с высотой
         x = 0  # на каждой новой строчке начинаем с нуля
 
+    timer = pygame.time.Clock()
+
     while 1:  # Основной цикл программы
+        timer.tick(60)
         screen.blit(bg, (0, 0))  # Каждую итерацию необходимо всё перерисовывать
 
         x = y = 0  # координаты
@@ -76,7 +85,18 @@ def main():
         for e in pygame.event.get():  # Обрабатываем события
             if e.type == QUIT:
                 raise SystemExit("QUIT")
+            if e.type == KEYDOWN and e.key == K_LEFT:
+                left = True
+            if e.type == KEYDOWN and e.key == K_RIGHT:
+                right = True
 
+            if e.type == KEYUP and e.key == K_LEFT:
+                left = False
+            if e.type == KEYUP and e.key == K_RIGHT:
+                right = False
+
+        hero.update(left, right)
+        hero.draw(screen)
         pygame.display.update()  # обновление и вывод всех изменений на экран
 
 

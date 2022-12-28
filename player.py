@@ -12,7 +12,7 @@ class Player(sprite.Sprite):
         self.yspeed = 0
         self.image = Surface((WIDTH, HEIGHT))
         self.image.fill(Color(COLOR))
-        self.rect = Rect(x,y,WIDTH, HEIGHT)
+        self.rect = Rect(x, y, WIDTH, HEIGHT)
 
     def update(self, left, right):
         if left:
