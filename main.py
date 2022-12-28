@@ -49,7 +49,7 @@ def main():
     x = y = 0  # координаты
 
     hero = Player(55, 55)
-    left = right = False
+    up = left = right = False
 
     for row in level:  # вся строка
         for col in row:  # каждый символ
@@ -87,15 +87,20 @@ def main():
                 raise SystemExit("QUIT")
             if e.type == KEYDOWN and e.key == K_LEFT:
                 left = True
-            if e.type == KEYDOWN and e.key == K_RIGHT:
-                right = True
-
             if e.type == KEYUP and e.key == K_LEFT:
                 left = False
+
+            if e.type == KEYDOWN and e.key == K_RIGHT:
+                right = True
             if e.type == KEYUP and e.key == K_RIGHT:
                 right = False
 
-        hero.update(left, right)
+            if e.type == KEYDOWN and e.key == K_UP:
+                up = True
+            if e.type == KEYUP and e.key == K_UP:
+                up = False
+
+        hero.update(left, right, up)
         hero.draw(screen)
         pygame.display.update()  # обновление и вывод всех изменений на экран
 
