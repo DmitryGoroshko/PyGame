@@ -1,8 +1,10 @@
 # Импортируем библиотеку pygame
 import pygame
 import player
-from pygame import *
+import blocks
+#from pygame import *
 from player import *
+from blocks import *
 
 # Объявляем переменные
 WIN_WIDTH = 800  # Ширина создаваемого окна
@@ -17,6 +19,12 @@ PLATFORM_COLOR = "#FF6262"
 
 
 def main():
+    hero = Player(55, 55)
+    up = left = right = False
+
+    entities = pygame.sprite.Group()
+    platforms = []
+    entities.add(hero)
     level = [
         "-------------------------",
         "-                       -",
@@ -48,9 +56,29 @@ def main():
 
     x = y = 0  # координаты
 
-    hero = Player(55, 55)
-    up = left = right = False
 
+
+    for row in level:  # вся строка
+        for col in row:  # каждый символ
+            if col == "-":
+                # создаем блок, заливаем его цветом и рисеум его
+                # pf = Surface((PLATFORM_WIDTH, PLATFORM_HEIGHT))
+                # pf.fill(Color(PLATFORM_COLOR))
+                # screen.blit(pf, (x, y))
+
+                pf = Blocks(x, y)
+                entities.add(pf)
+                platforms.append(pf)
+
+
+            x += PLATFORM_WIDTH  # блоки платформы ставятся на ширине блоков
+        y += PLATFORM_HEIGHT  # то же самое и с высотой
+        x = 0  # на каждой новой строчке начинаем с нуля
+
+
+
+
+    x = y = 0  # координаты
     for row in level:  # вся строка
         for col in row:  # каждый символ
             if col == "-":
@@ -63,25 +91,13 @@ def main():
         y += PLATFORM_HEIGHT  # то же самое и с высотой
         x = 0  # на каждой новой строчке начинаем с нуля
 
-    timer = pygame.time.Clock()
 
+
+
+    timer = pygame.time.Clock()
     while 1:  # Основной цикл программы
         timer.tick(60)
         screen.blit(bg, (0, 0))  # Каждую итерацию необходимо всё перерисовывать
-
-        x = y = 0  # координаты
-        for row in level:  # вся строка
-            for col in row:  # каждый символ
-                if col == "-":
-                    # создаем блок, заливаем его цветом и рисеум его
-                    pf = Surface((PLATFORM_WIDTH, PLATFORM_HEIGHT))
-                    pf.fill(Color(PLATFORM_COLOR))
-                    screen.blit(pf, (x, y))
-
-                x += PLATFORM_WIDTH  # блоки платформы ставятся на ширине блоков
-            y += PLATFORM_HEIGHT  # то же самое и с высотой
-            x = 0  # на каждой новой строчке начинаем с нуля
-
         for e in pygame.event.get():  # Обрабатываем события
             if e.type == QUIT:
                 raise SystemExit("QUIT")
@@ -101,7 +117,8 @@ def main():
                 up = False
 
         hero.update(left, right, up)
-        hero.draw(screen)
+
+        entities.draw(screen)
         pygame.display.update()  # обновление и вывод всех изменений на экран
 
 

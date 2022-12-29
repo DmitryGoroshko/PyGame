@@ -5,7 +5,7 @@ PLATFORM_HEIGHT = 32
 PLATFORM_COLOR = "#FF6262"
 
 class Blocks(sprite.Sprite):
-    def __init__(self):
+    def __init__(self, x, y):
         sprite.Sprite.__init__(self)
         self.image = Surface((PLATFORM_WIDTH, PLATFORM_HEIGHT))
         self.image.fill(Color(PLATFORM_COLOR))
