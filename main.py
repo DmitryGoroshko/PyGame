@@ -1,8 +1,5 @@
 # Импортируем библиотеку pygame
 import pygame
-import player
-import blocks
-#from pygame import *
 from player import *
 from blocks import *
 
@@ -116,7 +113,8 @@ def main():
             if e.type == KEYUP and e.key == K_UP:
                 up = False
 
-        hero.update(left, right, up)
+
+        hero.update(left, right, up, platforms)
 
         entities.draw(screen)
         pygame.display.update()  # обновление и вывод всех изменений на экран
